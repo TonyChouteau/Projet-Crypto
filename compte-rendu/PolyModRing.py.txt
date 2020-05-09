@@ -1,0 +1,188 @@
+#===================================================
+#	Classe polynôme dans un anneau ainsi que toutes ses opérations
+#
+#	Tony Chouteau - Info2
+#	Enssat
+#
+#	Année 2019-2020
+#
+#===================================================
+
+
+#===================================================
+# DEFINITION
+#===================================================
+
+class PolynomeModRing:
+
+  #Constructor
+  def __init__(self, p, n):
+    assert isinstance(p, list), "p doit être sous forme de liste de coefficients"
+    assert isinstance(n, int), "n doit être un entier"
+
+    self.p = [p[i]%n for i in range(len(p))]
+    self.n = n
+  
+  def __neg__(self):
+    return PolynomeModRing([-k for k in self.p], self.n)
+
+  def __sub__(self, pq):
+    assert isinstance(pq, PolynomeModRing), "k doit être un polynome"
+    #assert self.n==pq.n, "le modulus des deux polynômes doivent être identiques"
+
+    return self+(-pq)
+
+  # Redéfinition de l'addition
+  def __add__(self, pq): 
+    assert isinstance(pq, PolynomeModRing), "k doit être un polynome"
+    assert self.n==pq.n, "le modulus des deux polynômes doivent être identiques"
+
+    p = copy.copy(self)
+    q = copy.copy(pq)
+    if (p.size()<q.size()):
+      p.set([0]*(q.size()-p.size())+p.p)
+    elif (p.size()>q.size()):
+      q.set([0]*(p.size()-q.size())+q.p)
+
+    r = [(p.p[i]+q.p[i])%self.n for i in range(p.size())]
+
+    return PolynomeModRing(r, self.n)
+
+  # Redéfinition de la multiplication
+  def __mul__(self, pq):
+    assert isinstance(pq,int) or isinstance(pq, PolynomeModRing), "q doit être un entier ou un polynôme"
+  
+    if isinstance(pq, PolynomeModRing):
+      if pq.powerMax() == 0:
+        pq = pq.p[pq.size()-1]
+
+    if isinstance(pq, int):
+      r = [(self.p[i]*pq)%self.n for i in range(self.size())]
+      return PolynomeModRing(r, self.n)
+    
+    if isinstance(pq, PolynomeModRing):
+      assert self.n==pq.n, "le modulus des deux polynômes doivent être identiques"
+      
+      p = copy.copy(self)
+      q = copy.copy(pq)
+      if (p.size()<q.size()):
+        p.set([0]+p.p)
+      else:
+        q.set([0]+q.p)
+      
+      r = []
+      for i in range(q.size()):
+        r0 = (p*q.p[i])
+        r0.set(r0.p + [0]*(q.size()-1-i))
+        r.append(r0)
+      
+      tailles = [rk.size() for rk in r]
+      r2 = PolynomeModRing([0]*max(tailles),self.n)
+      for ri in r:
+        r2 += ri
+
+      r2.simplify()
+
+      return r2
+
+  # Redéfinition de la multiplication
+  def __floordiv__(self, pq):
+    assert isinstance(pq,int) or isinstance(pq, PolynomeModRing), "q doit être un entier ou un polynôme"
+  
+    if isinstance(pq, PolynomeModRing):
+      if pq.powerMax() == 0:
+        pq = pq.p[pq.size()-1]
+    
+    if isinstance(pq, int):
+      r = [(self.p[i]*inverseMod(pq, self.n))%self.n for i in range(self.size())]
+      print(r)
+      return PolynomeModRing(r, self.n).simplify()
+
+    if isinstance(pq, PolynomeModRing):
+      assert self.n==pq.n, "le modulus des deux polynômes doivent être identiques"
+
+      p = copy.copy(self)
+      q = copy.copy(pq)
+      if (p.size()<q.size()):
+        p.set([0]*(q.size()-p.size())+p.p)
+      elif (p.size()>q.size()):
+        q.set([0]*(p.size()-q.size())+q.p)
+      
+      first = True
+      r = PolynomeModRing([0], self.n)
+      while p.powerMax()>=q.powerMax():
+        rkPow = p.powerMax()-q.powerMax()
+        rkCoef = p.p[p.size()-p.powerMax()-1]*inverseMod(q.p[q.size()-q.powerMax()-1], self.n)%self.n
+        rk = PolynomeModRing([0]*(rkPow+1), self.n)
+        rk.p[rk.size()-rkPow-1] = rkCoef
+        if first:
+          first = False
+          r = PolynomeModRing([0]*(rkPow+1), self.n)
+        r.p[r.size()-rkPow-1] = rkCoef
+        p = p-(q*rk)
+      
+      return r
+
+  # Redéfinition de la puissance
+  def __pow__(self, k):
+    return expoRapide(self, k, self.n)
+
+  def powerMax(self):
+    i = 0
+    while self.size() > 1 and i<self.size()-1 and self.p[i]==0:
+      i+=1
+    return self.size()-1-i
+
+  def simplify(self):
+    while self.size() > 1 and self.p[0]==0:
+      self.set(self.p[1:])
+    return self
+  
+  def set(self, p):
+    self.p = p
+
+  def size(self):
+    return len(self.p)
+
+  def __str__(self):
+    return self.toString()
+
+  def toString(self):
+    #return str(self.p[len(p)-1])
+
+    if self.powerMax() == 0:
+      return "("+str(self.p[self.size()-1])+")"
+
+    m = []
+    for k in range(self.size()):
+      if (self.p[k] != 0):
+        m.append((self.p[k],self.size()-1-k))
+    
+    return "("+" + ".join([str(m[i][0])+"x^"+str(m[i][1]) for i in range(len(m))])+")"
+	
+#===================================================
+# TESTS
+#===================================================
+
+n = 29
+p = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15]
+q = [-1, 0, 15]
+
+P = PolynomeModRing(p, n)
+Q = PolynomeModRing(q, n)
+
+R = P+Q
+print("Addition de deux polynômes P+Q :", P,"+", Q,"\n=", R)
+print("")
+
+k = 2
+R = P*k
+print("Produit d'un polynôme et d'un entier P*2 :",P,"*",k,"\n=",R)
+print("")
+
+R = P*Q
+print("Produit de deux polynômes P*Q :", P, "*", Q, "\n=",R)
+print("")
+
+R = P//Q
+print("Division euclidienne de deux polynômes P//Q=R :", P, "//", Q, "\n=",R)
