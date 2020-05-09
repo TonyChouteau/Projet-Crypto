@@ -1,0 +1,2038 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{report}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+
+    \usepackage{titlesec}
+    \usepackage{framed,color}
+    \definecolor{shadecolor}{rgb}{.92, .92, .92}
+    
+    \newenvironment{code}%
+   {\snugshade}%
+   {\endsnugshade}
+   
+ 
+    \titleformat{\chapter}[display]
+      {\normalfont\bfseries}{}{0pt}{\huge}
+      
+      \titlespacing*{\chapter}{10pt}{10pt}{10pt}
+      
+     \titleformat{\subsubsection}{\filcenter}{}{}{}
+     \titleformat{\paragraph}{\filcenter}{}{}{}
+        
+
+    \newcommand{\li}{\rule{\linewidth}{0.5pt}}
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    
+    \definecolor{verbatim}{gray}{0.93}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{{\li\newline\huge \textbf{TP de Cryptologie}\par} }
+    \author{\Large{Tony Chouteau - Info 2}}
+    \date{\Large{Avril 2020}\\\newline\li\\\bigskip\normalsize ~ Fait via le Jupyter Notebook de Google Colab}
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+
+
+
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1.5cm,bmargin=1.5cm,lmargin=1.5cm,rmargin=1.5cm}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+    \tableofcontents
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+
+\chapter{\texorpdfstring{\textbf{Introduction}}{Introduction}}\label{introduction}
+
+\subsubsection{\texorpdfstring{\textbf{Imports}}{Imports}}\label{imports}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k+kn}{import} \PY{n+nn}{random} \PY{k}{as} \PY{n+nn}{rand}
+        \PY{k+kn}{import} \PY{n+nn}{sys}
+        \PY{k+kn}{import} \PY{n+nn}{sympy} \PY{k}{as} \PY{n+nn}{sy}
+        \PY{k+kn}{import} \PY{n+nn}{time}
+        \PY{k+kn}{import} \PY{n+nn}{copy}
+        \PY{c+c1}{\PYZsh{}import math}
+\end{Verbatim}
+\end{code}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+J'utilise pour ce projet:
+\begin{enumerate}
+    \item 
+La bibliothèque \(sys\) pour augmenter le nombre maximum de
+récursion (utile pour la génération de très grands nombres premiers).
+\item
+La bibliothèque \(sympy\) pour l'ensemble de ses fonctions
+permettant de trouver, vérifier des nombres premiers, et donc tester mes
+algorithmes.
+\item
+La bibliothèque \(time\) pour mesurer la complexité temporelle
+réelle de mess algorithmes. J'en profite pour définir une fonction
+\(millis()\) qui renvoie le nombre de millisecondes depuis \emph{epoch}, soit
+le \emph{1er janvier 1970, 00:00:00 (UTC)}.
+
+\end{enumerate}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}183}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{La version de python utilisé est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sys}\PY{o}{.}\PY{n}{version}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{limit} \PY{o}{=} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{7}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de récursions maximum définie à :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{limit}\PY{p}{)}
+          \PY{n}{sys}\PY{o}{.}\PY{n}{setrecursionlimit}\PY{p}{(}\PY{n}{limit}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{millis} \PY{o}{=} \PY{k}{lambda}\PY{p}{:} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Milliseconde actuelle :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{millis}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{micro} \PY{o}{=} \PY{k}{lambda}\PY{p}{:} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MicroSeconde actuelle :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{micro}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{def} \PY{n+nf}{displayPeriod}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{p}{(}\PY{n}{t}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{µs}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{if} \PY{p}{(}\PY{n}{t}\PY{o}{\PYZlt{}}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{t}\PY{o}{/}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ms}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+              \PY{k}{return} \PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{t}\PY{o}{/}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{6}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+La version de python utilisé est : 3.6.9 (default, Nov  7 2019, 10:44:02) 
+[GCC 8.3.0]
+
+Nombre de récursions maximum définie à : 10000000
+
+Milliseconde actuelle : 1587312760032
+MicroSeconde actuelle : 1587312760032500
+
+    \end{Verbatim}
+    \end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 1 - Arithmétique dans Z et Z/nZ
+avec
+Python}}{Partie 1 - Arithmétique dans Z et Z/nZ avec Python}}\label{partie-1---arithmuxe9tique-dans-z-et-znz-avec-python}
+
+\section{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsection{\texorpdfstring{\textbf{Euclide
+Simple}}{Euclide Simple}}\label{euclide-simple}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{euclideSimple}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{p}{(}\PY{n}{a} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{b} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{a et b doivent être positifs}\PY{l+s+s2}{\PYZdq{}}
+          
+          \PY{k}{if} \PY{n}{a} \PY{o}{\PYZlt{}} \PY{n}{b}\PY{p}{:}
+            \PY{n}{a}\PY{p}{,} \PY{n}{b} \PY{o}{=} \PY{n}{b}\PY{p}{,} \PY{n}{a}
+        
+          \PY{n}{a0}\PY{p}{,} \PY{n}{b0} \PY{o}{=} \PY{n}{a}\PY{p}{,} \PY{n}{b}
+          
+          \PY{k}{while} \PY{n}{b}\PY{p}{:}
+            \PY{n}{a}\PY{p}{,} \PY{n}{b} \PY{o}{=} \PY{n}{b}\PY{p}{,} \PY{n}{a} \PY{o}{\PYZpc{}} \PY{n}{b}
+          
+          \PY{k}{return} \PY{n}{a}\PY{p}{,} \PY{n}{a0}\PY{o}{/}\PY{o}{/}\PY{n}{a}\PY{p}{,} \PY{n}{b0}\PY{o}{/}\PY{o}{/}\PY{n}{a}
+\end{Verbatim}
+\end{code}
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}185}]:} \PY{n}{a} \PY{o}{=} \PY{l+m+mi}{60}
+          \PY{n}{b} \PY{o}{=} \PY{l+m+mi}{45}
+          
+          \PY{n}{r}\PY{p}{,} \PY{n}{a0}\PY{p}{,} \PY{n}{b0} \PY{o}{=} \PY{n}{euclideSimple}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le PGCD de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{et de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ainsi : }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{a0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{b0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le PGCD de 60 et de 45 est : 15
+
+Ainsi : 
+4 * 15 = 60
+3 * 15 = 45
+
+    \end{Verbatim}
+    \end{code}
+
+\subsection{\texorpdfstring{\textbf{Euclide
+Étendu}}{Euclide Étendu}}\label{euclide-uxe9tendu}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{euclideEtendu}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n+nb}{type}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{==}\PY{n+nb}{type}\PY{p}{(}\PY{n}{b}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Les deux paramêtres doivent avoir le même type}\PY{l+s+s2}{\PYZdq{}}
+          
+          \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{r0}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{n}{a}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}
+          
+          \PY{k}{while} \PY{n}{r0}\PY{p}{:}
+            \PY{n}{q} \PY{o}{=} \PY{n}{r}\PY{o}{/}\PY{o}{/}\PY{n}{r0}
+            \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{r0}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{n}{r0}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0}\PY{p}{,} \PY{n}{r}\PY{o}{\PYZhy{}}\PY{n}{q}\PY{o}{*}\PY{n}{r0}\PY{p}{,} \PY{n}{u}\PY{o}{\PYZhy{}}\PY{n}{q}\PY{o}{*}\PY{n}{u0}\PY{p}{,} \PY{n}{v}\PY{o}{\PYZhy{}}\PY{n}{q}\PY{o}{*}\PY{n}{v0}
+        
+          \PY{k}{return} \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v}
+\end{Verbatim}
+\end{code}
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}187}]:} \PY{n}{a} \PY{o}{=} \PY{l+m+mi}{45}
+          \PY{n}{b} \PY{o}{=} \PY{l+m+mi}{60}
+          
+          \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v} \PY{o}{=} \PY{n}{euclideEtendu}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le PGCD de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{et de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{De plus : r=au+bv avec u =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{u}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ et v =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{a}\PY{o}{*}\PY{n}{u}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{b}\PY{o}{*}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le PGCD de 45 et de 60 est : 15
+
+De plus : r=au+bv avec u = -1  et v = 1
+
+15 = 45 * -1 + 60 * 1 = -45 + 60
+
+    \end{Verbatim}
+    \end{code}
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Inverse
+Modulaire}}{Inverse Modulaire}}\label{inverse-modulaire}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+    \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{inverseMod}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+          \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{euclideEtendu}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          
+          \PY{k}{assert} \PY{n}{r}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x et n doivent être premiers entre eux}\PY{l+s+s2}{\PYZdq{}} 
+        
+          \PY{k}{return} \PY{n}{u}\PY{o}{\PYZpc{}}\PY{k}{n}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}189}]:} \PY{n}{a} \PY{o}{=} \PY{l+m+mi}{23}
+          \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{29}
+          
+          \PY{n}{inv} \PY{o}{=} \PY{n}{inverseMod}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{inverse de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{a}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{modulo}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{inv}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+L'inverse de 23 modulo 29 est : 24
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+3}}{Question 3}}\label{question-3}
+
+\subsection{\texorpdfstring{\textbf{Exponentiation
+Rapide}}{Exponentiation Rapide}}\label{exponentiation-rapide}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+          \PY{k}{if} \PY{p}{(}\PY{n}{k} \PY{o}{==} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o+ow}{and} \PY{n}{n} \PY{o}{!=} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Inverse modulaire}
+            \PY{k}{return} \PY{n}{inverseMod}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{p}{)}
+          \PY{k}{if} \PY{p}{(}\PY{n}{k} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{p}{(}\PY{n}{n}\PY{o}{!=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{n}
+            \PY{k}{else}\PY{p}{:}
+              \PY{k}{return} \PY{n}{x}
+          \PY{k}{if} \PY{p}{(}\PY{o+ow}{not} \PY{n}{k}\PY{o}{\PYZpc{}}\PY{k}{2}): \PY{c+c1}{\PYZsh{}Paire}
+            \PY{k}{if} \PY{p}{(}\PY{n}{n}\PY{o}{!=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{n}, k//2, n)\PYZpc{}n
+            \PY{k}{else}\PY{p}{:}
+              \PY{k}{return} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          \PY{k}{if} \PY{p}{(}\PY{n}{k}\PY{o}{\PYZpc{}}\PY{k}{2}): \PY{c+c1}{\PYZsh{}Impaire}
+            \PY{k}{if} \PY{p}{(}\PY{n}{n}\PY{o}{!=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZpc{}}\PY{k}{n}, (k\PYZhy{}1)//2, n)\PYZpc{}n
+            \PY{k}{else}\PY{p}{:}
+              \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{x}\PY{p}{,} \PY{p}{(}\PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}191}]:} \PY{n}{x} \PY{o}{=} \PY{l+m+mi}{4}
+          \PY{n}{k} \PY{o}{=} \PY{l+m+mi}{87}
+          
+          \PY{n}{r} \PY{o}{=} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à la puissance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{k}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+4 à la puissance 87 donne : 23945242826029513411849172299223580994042798784118784
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+4}}{Question 4}}\label{question-4}
+
+\subsection{\texorpdfstring{\textbf{IntegerModRing}}{IntegerModRing}}\label{integermodring}
+
+Utilisant Jupyter je n'ai pas accès à l'objet \(IntegerModRing\) de
+SAGE, je ne peux donc pas proposer d'études temporelle.
+Je l'ai tout de même re-créé en utilisant une nouvelle classe et de nouvelles méthodes.
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{class} \PY{n+nc}{IntegerModRing}\PY{p}{:} \PY{c+c1}{\PYZsh{}Z/nZ}
+          
+          \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} Constructeur : IntegerModRing(n)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n} \PY{o}{=} \PY{n}{n}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{o}{.}\PY{n}{n} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}
+        
+          \PY{k}{class} \PY{n+nc}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{:} \PY{c+c1}{\PYZsh{} Rendre l\PYZsq{}objet \PYZdq{}Callable\PYZdq{} : A(x)}
+              \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{x} \PY{o}{\PYZpc{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}
+              \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}add\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} Redéfinition de l'addition}
+                \PY{k}{return} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{+}\PY{n}{a}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}
+              \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}mul\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{multi}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} Redéfinition de la multiplication}
+                \PY{k}{return} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{*} \PY{n}{multi}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}
+              \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}pow\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{power}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} Redéfinition de la puissance}
+                \PY{k}{return} \PY{n}{expoRapide}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{,} \PY{n}{power}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}193}]:} \PY{n}{x} \PY{o}{=} \PY{l+m+mi}{11}
+          \PY{n}{k} \PY{o}{=} \PY{l+m+mi}{2}
+          
+          \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{5}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A = IntegerModRing(}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{A} \PY{o}{=} \PY{n}{IntegerModRing}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{r} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{k}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Addition A(x)+k :}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{k}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{r} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{n}{k}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Multiplication A(x)**k :}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{k}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{r} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{k}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Puissance A(x)*k :}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZca{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{k}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{r} \PY{o}{=} \PY{n}{A}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inverse A(x)**(\PYZhy{}1) :}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZca{} \PYZhy{}1 }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+A = IntegerModRing( 5 )
+
+Addition A(x)+k :
+ 11 + 2 \% 5 = 3
+
+Multiplication A(x)**k :
+ 11 * 2 \% 5 = 2
+
+Puissance A(x)*k :
+ 11 \^{} 2 \% 5 = 1
+
+Inverse A(x)**(-1) :
+ 11 \^{} -1 \% 5 = 1
+
+    \end{Verbatim}
+\end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 2 - Codage et
+Décodage}}{Partie 2 - Codage et Décodage}}\label{partie-2---codage-et-duxe9codage}
+
+\section{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsection{\texorpdfstring{\textbf{Alphabet et
+Dictionnaires}}{Alphabet et Dictionnaires}}\label{alphabet-et-dictionnaires}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{n}{abc} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;:!?}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{()\PYZam{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZhy{}+*/=@}\PY{l+s+s2}{\PYZdq{}}
+        
+        \PY{n}{cDico} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{abc}\PY{p}{[}\PY{n}{key}\PY{p}{]}\PY{p}{:}\PY{n}{key} \PY{k}{for} \PY{n}{key} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{p}{)}\PY{p}{\PYZcb{}}
+        \PY{n}{dDico} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{key}\PY{p}{:}\PY{n}{abc}\PY{p}{[}\PY{n}{key}\PY{p}{]} \PY{k}{for} \PY{n}{key} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{p}{)}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}195}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Début }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{abc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{abc}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{ Fin}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tailles :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{cDico}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dDico}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Alphabet :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{abc}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Dico de codage :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{cDico}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Dico de décodage :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{dDico}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Début " \$ - 
+ " Fin
+Tailles : 82 82 82
+
+Alphabet : \$
+ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;:!?'()\&\%-+*/=@
+
+Dico de codage : \{'\$': 0, '\textbackslash{}n': 1, ' ': 2, 'a': 3, 'b': 4, 'c': 5, 'd': 6, 'e': 7, 'f': 8, 'g': 9,
+                  ......
+                  ')': 73, '\&': 74, '\%': 75, '-': 76, '+': 77, '*': 78, '/': 79, '=': 80, '@': 81\}
+                  
+Dico de décodage : \{0: '\$', 1: '\textbackslash{}n', 2: ' ', 3: 'a', 4: 'b', 5: 'c', 6: 'd', 7: 'e', 8: 'f', 9: 'g',
+                    ......
+                    73: ')', 74: '\&', 75: '\%', 76: '-', 77: '+', 78: '*', 79: '/', 80: '=', 81: '@'\}
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Encodage d'un
+bloc}}{Encodage d'un bloc}}\label{encodage-dun-bloc}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+Remarque : Dans le cas d'un caractère inconnu, il est remplacé par le
+dernier caractère de l'alphabet, rajouté pour l'occasion : "@".
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{encodageBloc}\PY{p}{(}\PY{n}{bloc}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{bloc}\PY{p}{:}
+            \PY{k}{try}\PY{p}{:}
+              \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cDico}\PY{p}{[}\PY{n}{c}\PY{p}{]}\PY{p}{)}
+            \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
+              \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        
+          \PY{n}{number} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{result}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{number} \PY{o}{+}\PY{o}{=} \PY{n}{result}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{i}
+        
+          \PY{k}{return} \PY{n}{number}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}197}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello World}\PY{l+s+s2}{\PYZdq{}}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message est : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cMsg} \PY{o}{=} \PY{n}{encodageBloc}\PY{p}{(}\PY{n}{msg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{encodage du message donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cMsg}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message est : "Hello World"
+
+L'encodage du message donne : 84856814622316789146
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+3}}{Question 3}}\label{question-3}
+
+Pour une taille de bloc \(P\), et un alphabet de taille \(N\), le code
+numérique maximal d'un bloc est de \(N^{P-1}\)
+
+\subsection{\texorpdfstring{\textbf{Décodage d'un
+bloc}}{Décodage d'un bloc}}\label{duxe9codage-dun-bloc}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+Remarque : Une taille de bloc est nécessaire en paramètre pour connaitre
+la puissance maximale de l'encodage du dit-bloc.
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{decodageBloc}\PY{p}{(}\PY{n}{bloc}\PY{p}{,} \PY{n}{maxChar}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n}{maxChar}\PY{o}{\PYZlt{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Taille de bloc trop grande}\PY{l+s+s2}{\PYZdq{}}
+          \PY{k}{assert} \PY{n}{bloc}\PY{o}{\PYZlt{}}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{maxChar}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bloc non valide, valeur trop grande}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        
+          \PY{n}{reste} \PY{o}{=} \PY{n}{bloc}
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{maxChar}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if}\PY{p}{(}\PY{n}{reste} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)}\PY{p}{:}
+              \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{reste}\PY{o}{/}\PY{o}{/}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)}\PY{p}{)}
+              \PY{n}{reste} \PY{o}{=} \PY{n}{reste}\PY{o}{\PYZpc{}}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)}
+        
+          \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}
+          \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{result}\PY{p}{:}
+            \PY{k}{try}\PY{p}{:}
+              \PY{n}{msg} \PY{o}{=} \PY{n}{dDico}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{+} \PY{n}{msg}
+            \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
+              \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{@}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{msg}
+        
+          \PY{k}{return} \PY{n}{msg}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+Ajout d'un caractère avant le décodage : ajout d'un \(len(dDico)\) (Afin
+d'être toujours en dehors de l'alphabet).
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}199}]:} \PY{n}{dMsg} \PY{o}{=} \PY{n}{decodageBloc}\PY{p}{(}\PY{n}{cMsg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le decodage du message donne : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{dMsg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{                Vérification : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le decodage du message donne : "Hello World"
+                Vérification : "Hello World"
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+4}}{Question 4}}\label{question-4}
+
+\subsection{\texorpdfstring{\textbf{Encodage d'un message
+entier}}{Encodage d'un message entier}}\label{encodage-dun-message-entier}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{encodage}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{encodedMsg} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{msg}\PY{p}{)}\PY{p}{,} \PY{n}{tailleBloc}\PY{p}{)}\PY{p}{:}
+            \PY{n}{encodedMsg}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{encodageBloc}\PY{p}{(}\PY{n}{msg}\PY{p}{[}\PY{n}{i}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{n}{tailleBloc}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{encodedMsg}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}201}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget orci}
+                 \PY{l+s+s2}{sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper. Sed dignissim,}
+                 \PY{l+s+s2}{......}
+                 \PY{l+s+s2}{tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio.}
+                 \PY{l+s+s2}{Nulla vitae. }\PY{l+s+s2}{\PYZdq{}}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message est : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cMsg} \PY{o}{=} \PY{n}{encodage}\PY{p}{(}\PY{n}{msg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{encodage du message complet donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cMsg}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+\textbf{Le message est :} "à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget 
+orci sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper. Sed dignissim, libero sed
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae. "
+
+L'encodage du message complet donne : [5175605931744531058174221399946258109,
+53610257152947054120140631808764154323, 103754296707586791015869521983086626148,
+......
+48444910900856704617692622269544623071, 4696941013398074923860390960090156871, 853019927550]
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Décodage d'un message codé entier
+(soit une liste de blocs
+encodés)}}{Décodage d'un message codé entier (soit une liste de blocs encodés)}}\label{duxe9codage-dun-message-coduxe9-entier-soit-une-liste-de-blocs-encoduxe9s}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{decodage}\PY{p}{(}\PY{n}{blocs}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{decodedMsg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{k}{for} \PY{n}{bloc} \PY{o+ow}{in} \PY{n}{blocs}\PY{p}{:}
+            \PY{n}{decodedMsg} \PY{o}{+}\PY{o}{=} \PY{n}{decodageBloc}\PY{p}{(}\PY{n}{bloc}\PY{p}{,} \PY{n}{tailleBloc}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{decodedMsg}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+Remarque : Le caractère special "à" à été remplacé par un "@" comme
+prévu
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}203}]:} \PY{n}{dMsg} \PY{o}{=} \PY{n}{decodage}\PY{p}{(}\PY{n}{cMsg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le decodage du message complet donne : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{dMsg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{                        Vérification : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le decodage du message complet donne : "@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Quisque egestas eget orci sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae. "
+
+                        Vérification : "à Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Quisque egestas eget orci sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae. "
+
+    \end{Verbatim}
+\end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 3 -
+RSA}}{Partie 3 - RSA}}\label{partie-3---rsa}
+
+\section{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsection{\texorpdfstring{\textbf{Production des valeurs p, q et
+a}}{Production des valeurs p, q et a}}\label{production-des-valeurs-p-q-et-a}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{bobPrive}\PY{p}{(}\PY{n+nb}{min}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{19}\PY{p}{,} \PY{n+nb}{max}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{p}\PY{p}{,} \PY{n}{q} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+          \PY{k}{while} \PY{n}{q}\PY{o}{==}\PY{n}{p}\PY{p}{:}
+            \PY{n}{p}\PY{p}{,} \PY{n}{q} \PY{o}{=} \PY{n}{sy}\PY{o}{.}\PY{n}{randprime}\PY{p}{(}\PY{n+nb}{min}\PY{p}{,} \PY{n+nb}{max}\PY{p}{)}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{randprime}\PY{p}{(}\PY{n+nb}{min}\PY{p}{,} \PY{n+nb}{max}\PY{p}{)}
+        
+          \PY{k}{assert} \PY{p}{(}\PY{n+nb}{min}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n+nb}{max} \PY{o}{\PYZgt{}} \PY{n+nb}{min}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le paramêtre min doit être supérieur à 0 et max doit être}
+                                         \PY{l+s+s2}{supérieur à min}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{n}{a}\PY{p}{,} \PY{n}{r} \PY{o}{=} \PY{n}{p}\PY{p}{,} \PY{l+m+mi}{0}
+          \PY{k}{while} \PY{n}{r}\PY{o}{!=}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{a} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{n+nb}{min}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{q}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{r}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{euclideSimple}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{q}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{return} \PY{n}{p}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{a}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+\paragraph{\texorpdfstring{\textbf{Partie
+Privé}}{Partie Privé}}\label{partie-privuxe9}
+
+Si \(power>14\), la fonction factor va devenir très chronophage.
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}205}]:} \PY{n}{power} \PY{o}{=} \PY{l+m+mi}{19}
+          
+          \PY{n}{q}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{a} \PY{o}{=} \PY{n}{bobPrive}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{n}{power}\PY{p}{,} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{power}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bob produit 2 nombres premiers :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{p}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{et q =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{q}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bob produit un nombre aléatoire premier avec phi(n)=(p\PYZhy{}1)(q\PYZhy{}1) :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{a =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Bob produit 2 nombres premiers :
+p = 70839248108601181661 et q = 55524790103495060851
+
+Bob produit un nombre aléatoire premier avec phi(n)=(p-1)(q-1) :
+a = 820408104386500733550364758094963808171
+
+    \end{Verbatim}
+\end{code}
+
+\paragraph{\texorpdfstring{\textbf{Partie
+Public}}{Partie Public}}\label{partie-public}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}206}]:} \PY{n}{n} \PY{o}{=} \PY{n}{p}\PY{o}{*}\PY{n}{q}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bob publie n=pq :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{b} \PY{o}{=} \PY{n}{inverseMod}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{q}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bob publie l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{inverse de a modulo phi(n) :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Bob publie n=pq :
+n = 3933334382319490099117642142495700253511
+
+Bob publie l'inverse de a modulo phi(n) :
+b = 72445839558856047732133526800573386731
+
+    \end{Verbatim}
+\end{code}
+
+\paragraph{\texorpdfstring{\textbf{Factor()}}{Factor()}}\label{factor}
+
+La fonction utilisé ici est la fonction \(primefactors(n)\) de la
+bibliothèque Sympy, le calcul est très chronophage pour des valeurs
+supérieures à \(10^{15}\) (cf : Partie Privé/Test)
+
+On remarque qu'il y a l'air d'y avoir que 2 facteurs premiers.
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}207}]:} \PY{n}{power} \PY{o}{=} \PY{l+m+mi}{14}
+          \PY{n}{q}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{a} \PY{o}{=} \PY{n}{bobPrive}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{n}{power}\PY{p}{,} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{power}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+          \PY{n}{n} \PY{o}{=} \PY{n}{p}\PY{o}{*}\PY{n}{q}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{p,q}\PY{p}{)}
+        
+          \PY{k}{if} \PY{p}{(}\PY{n}{power} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{15}\PY{p}{)}\PY{p}{:}
+            \PY{n}{l} \PY{o}{=} \PY{n}{sy}\PY{o}{.}\PY{n}{primefactors}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+          \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{La valeur power est trop haute, le calcul durerait trop longtemps}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+934263701871971 808037973730219
+[808037973730219, 934263701871971]
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Obtention la taille du
+bloc}}{Obtention la taille du bloc}}\label{obtention-la-taille-du-bloc}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{tailleBlocMax}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{tailleBloc} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{k}{while} \PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{tailleBloc}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{n}{n}\PY{p}{:}
+            \PY{n}{tailleBloc}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+        
+          \PY{k}{return} \PY{n}{tailleBloc}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}209}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pour n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, la taille du bloc est de maximum :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Pour n = 3933334382319490099117642142495700253511 , la taille du bloc est de maximum : 20
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Chiffrement RSA d'un simple
+bloc}}{Chiffrement RSA d'un simple bloc}}\label{chiffrement-rsa-dun-simple-bloc}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{chiffrementRSA}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{n}{n}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x doit être inférieur à n}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{k}{return} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}211}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HelloWorld}\PY{l+s+s2}{\PYZdq{}}
+          \PY{n}{cMsg} \PY{o}{=} \PY{n}{encodageBloc}\PY{p}{(}\PY{n}{msg}\PY{p}{)}
+          \PY{n}{rsa} \PY{o}{=} \PY{n}{chiffrementRSA}\PY{p}{(}\PY{n}{cMsg}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{ à été chiffré :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{rsa}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message "HelloWorld" à été chiffré : 3068046575213518710256046111929775664104
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Chiffrement RSA d'un message
+entier}}{Chiffrement RSA d'un message entier}}\label{chiffrement-rsa-dun-message-entier}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{messageToRSA}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{taille} \PY{o}{=} \PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n}{l} \PY{o}{=} \PY{n}{encodage}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{n}{taille}\PY{p}{)}
+        
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{k}{for} \PY{n}{elt} \PY{o+ow}{in} \PY{n}{l}\PY{p}{:}
+            \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{chiffrementRSA}\PY{p}{(}\PY{n}{elt}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{return} \PY{n}{result}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}213}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget orci}
+                 \PY{l+s+s2}{sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper. Sed dignissim,}
+                 \PY{l+s+s2}{......}
+                 \PY{l+s+s2}{tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio.}
+                 \PY{l+s+s2}{Nulla vitae. }\PY{l+s+s2}{\PYZdq{}}
+                 
+          \PY{n}{msgRSA} \PY{o}{=} \PY{n}{messageToRSA}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{b}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à été chiffré :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgRSA}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+\textbf{Le message} "à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget orci sit 
+amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper. Sed dignissim, libero sed sodales
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae. "
+
+\textbf{à été chiffré : }[2984997306659616885403234044691507117892, 524239168200635302096730407294077786241, 
+641427556272420534589639353268340765986, 2451047400590571846880830778373999556399,
+......
+3327835986657716232182250653126412308245, 1939631357461029317567847319438648758274,
+880062521405306667062101246208064289226, 955451065725524141511404637428216027204]
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+3}}{Question 3}}\label{question-3}
+
+\subsection{\texorpdfstring{\textbf{Déchiffrement RSA d'un
+message}}{Déchiffrement RSA d'un message}}\label{duxe9chiffrement-rsa-dun-message}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{rsaToMessage}\PY{p}{(}\PY{n}{rsa}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{k}{for} \PY{n}{elt} \PY{o+ow}{in} \PY{n}{rsa}\PY{p}{:}
+            \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{chiffrementRSA}\PY{p}{(}\PY{n}{elt}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{taille} \PY{o}{=} \PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n}{l} \PY{o}{=} \PY{n}{decodage}\PY{p}{(}\PY{n}{result}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{n}{taille}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{l}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+Le message est donc bien déchiffré, exepté, encore une fois, pour le
+caractère spécial "à" qui a été remplacé par un "@".
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}215}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message à déchiffrer est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgRSA}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{msgAfter} \PY{o}{=} \PY{n}{rsaToMessage}\PY{p}{(}\PY{n}{msgRSA}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Message déchiffré :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgAfter}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{     Vérification :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msg}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+\textbf{Le message à déchiffrer est : }
+[2984997306659616885403234044691507117892, 524239168200635302096730407294077786241, 
+641427556272420534589639353268340765986, 2451047400590571846880830778373999556399,
+......
+3327835986657716232182250653126412308245, 1939631357461029317567847319438648758274,
+880062521405306667062101246208064289226, 955451065725524141511404637428216027204]
+
+\textbf{Message déchiffré : }@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget  
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae.
+
+     \textbf{Vérification : }@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget 
+......
+tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae.
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+4}}{Question 4}}\label{question-4}
+
+\subsection{\texorpdfstring{\textbf{Déchiffrement
+frauduleux}}{Déchiffrement frauduleux}}\label{duxe9chiffrement-frauduleux}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  \(x\) doit être premier avec \(n\) :
+\end{enumerate}
+
+Le principe du chiffrement RSA est fondé sur la complexité de la
+décomposition d'un grand nombre en facteurs premiers, en d'autres mots,
+de retrouver \(p\) et \(q\) à partir de \(n\).
+
+Si \(x\) n'est pas premier avec \(n\), alors \(x\) vaut soit \(q\), soit
+p (\(x\) étant inférieur à \(n\)), ainsi si \(x\) n'est pas premier, il
+est possible de retrouver les facteurs premiers de n qui sont donc \(x\)
+et \(\frac{n}{x}\).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{1}
+\end{enumerate}
+
+\paragraph{}\label{section}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{probXPrimeWithN}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{xMax} \PY{o}{=} \PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2/}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{abc}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{xMax}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}217}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{La probabilité que le message encodé ne soit pas premier avec n est de :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                 \PY{n}{probXPrimeWithN}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+La probabilité que le message encodé ne soit pas premier avec n est de :
+2/188919613181312032574569023867244773376
+
+    \end{Verbatim}
+\end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 4 - Génération de nombres
+premiers}}{Partie 4 - Génération de nombres premiers}}\label{partie-4---guxe9nuxe9ration-de-nombres-premiers}
+
+\section{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsection{\textbf{Resolution de l'équation \((n-1) =
+2^{s}\times d\)}}\label{resolution-de-luxe9quation-n-1-2sd}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{resolveMillerFormula}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n}{n}\PY{o}{\PYZpc{}}\PY{k}{2}, \PYZdq{}n doit être impair\PYZdq{}
+        
+          \PY{n}{s} \PY{o}{=} \PY{l+m+mi}{0}
+          
+          \PY{n}{nMinus1Bin} \PY{o}{=} \PY{n+nb}{bin}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{:}\PY{p}{]}
+          \PY{k}{while} \PY{p}{(}\PY{n}{s}\PY{o}{\PYZlt{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nMinus1Bin}\PY{p}{)} \PY{o+ow}{and} \PY{n}{nMinus1Bin}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nMinus1Bin}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{s}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+            \PY{n}{s}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+        
+          \PY{n}{d} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{nMinus1Bin}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nMinus1Bin}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{s}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+          
+          \PY{k}{return} \PY{n}{s}\PY{p}{,} \PY{n}{d}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}219}]:} \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{565}
+          
+          \PY{n}{s}\PY{p}{,} \PY{n}{d} \PY{o}{=} \PY{n}{resolveMillerFormula}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{= 2 \PYZca{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+564 = 2 \^{} 2 * 141
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Test de Miller en base
+définie}}{Test de Miller en base définie}}\label{test-de-miller-en-base-duxe9finie}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{testMillerBase}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n}{n}\PY{o}{\PYZgt{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{n doit être supérieur à 3}\PY{l+s+s2}{\PYZdq{}}
+          \PY{k}{assert} \PY{n}{a}\PY{o}{\PYZlt{}}\PY{n}{n}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{a doit être inférieur à n}\PY{l+s+s2}{\PYZdq{}}
+          
+          \PY{n}{s}\PY{p}{,} \PY{n}{d} \PY{o}{=} \PY{n}{resolveMillerFormula}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+        
+          \PY{n}{x} \PY{o}{=} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{d}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+        
+          \PY{k}{if} \PY{n}{x}\PY{o}{==}\PY{l+m+mi}{1} \PY{o+ow}{or} \PY{n}{x}\PY{o}{==}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{k}{return} \PY{k+kc}{False}
+        
+          \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{s}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+            \PY{k}{if} \PY{n}{x}\PY{o}{==}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+              \PY{k}{return} \PY{k+kc}{False}
+          
+          \PY{k}{return} \PY{k+kc}{True}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}221}]:} \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{23}
+          \PY{n}{a} \PY{o}{=} \PY{l+m+mi}{6}
+          \PY{n}{r} \PY{o}{=} \PY{n}{testMillerBase}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{o+ow}{not} \PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Comparaison avec la bibliothèque Sympy :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{561}
+          \PY{n}{a} \PY{o}{=} \PY{l+m+mi}{50}
+          \PY{n}{r} \PY{o}{=} \PY{n}{testMillerBase}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{o+ow}{not} \PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Comparaison avec la bibliothèque Sympy :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le témoin 50 est un menteur pour l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{entier 561.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+23 est premier : True
+Comparaison avec la bibliothèque Sympy : True
+
+561 est premier : True
+Comparaison avec la bibliothèque Sympy : False
+Le témoin 50 est un menteur pour l'entier 561.
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Test de
+Miller}}{Test de Miller}}\label{test-de-miller}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{testMiller}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{:}
+          \PY{k}{if} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{k}{return} \PY{k+kc}{False}
+          \PY{k}{if} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{:}
+            \PY{k}{return} \PY{k+kc}{True}
+          \PY{k}{if} \PY{o+ow}{not} \PY{n}{n}\PY{o}{\PYZpc{}}\PY{k}{2}:
+            \PY{k}{return} \PY{k+kc}{False}
+          
+          \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{:}
+            \PY{n}{a} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}
+            \PY{k}{if} \PY{n}{testMillerBase}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{k+kc}{False}
+          \PY{k}{return} \PY{k+kc}{True}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}223}]:} \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{23}
+          \PY{n}{r} \PY{o}{=} \PY{n}{testMiller}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Comparaison avec la bibliothèque Sympy :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{221}
+          \PY{n}{r} \PY{o}{=} \PY{n}{testMiller}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{r}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Comparaison avec la bibliothèque Sympy :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{utilisation de multiples témoins, permet de mettre en défaut les témoins}
+                 \PY{l+s+s2}{menteurs}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+23 est premier : True
+Comparaison avec la bibliothèque Sympy : True
+
+221 est premier : False
+Comparaison avec la bibliothèque Sympy : False
+L'utilisation de multiples témoins, permet de mettre en défaut les témoins menteurs'
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+3}}{Question 3}}\label{question-3}
+
+\subsection{\texorpdfstring{\textbf{Générateur de nombre
+premier}}{Générateur de nombre premier}}\label{guxe9nuxe9rateur-de-nombre-premier}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{generateurPremier}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+          \PY{k}{assert} \PY{n}{k}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k doit être supérieur strictement à 1}\PY{l+s+s2}{\PYZdq{}}
+          
+          \PY{n}{x} \PY{o}{=} \PY{l+m+mi}{1}
+          \PY{k}{while} \PY{p}{(}\PY{o+ow}{not} \PY{n}{testMiller}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{|} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} Permet d'avoir un nombre impair}
+        
+          \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}225}]:} \PY{n}{power} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{250}\PY{p}{,} \PY{l+m+mi}{500}\PY{p}{]}\PY{c+c1}{\PYZsh{}, 1000, 1000, 2000, 3000, 4000, 5000]}
+          
+          \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{power}\PY{p}{:}
+            \PY{n}{t} \PY{o}{=} \PY{n}{micro}\PY{p}{(}\PY{p}{)}
+            \PY{n}{x} \PY{o}{=} \PY{n}{generateurPremier}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est bien premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Nombre premier trouvé en}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{displayPeriod}\PY{p}{(}\PY{n}{micro}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+5 - 23 est bien premier : True
+\#Nombre premier trouvé en 1.473ms
+
+10 - 983 est bien premier : True
+\#Nombre premier trouvé en 2.412ms
+
+100 - 1115478283892045139697472002619 est bien premier : True
+\#Nombre premier trouvé en 32.81ms
+
+250 - 150591927924164123781108730185339606251824 ...... 76530187998579707 est bien premier : True
+\#Nombre premier trouvé en 154.745ms
+
+500 - 297550349025194451582781880445926863926293 ...... 06617779917107783 est bien premier : True
+\#Nombre premier trouvé en 759.682ms
+
+
+    \end{Verbatim}
+\end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 5 -
+ElGamal}}{Partie 5 - ElGamal}}\label{partie-5---elgamal}
+
+\section{\texorpdfstring{\textbf{Construction de
+p}}{Construction de p}}\label{construction-de-p}
+
+\subsection{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsubsection{\texorpdfstring{\textbf{Condition de
+complexité}}{Condition de complexité}}\label{condition-de-complexituxe9}
+
+L'algoritme ElGamal repose sur la complexité du problème de logarithme
+discret (déchiffrement par force brut), contrairement à
+l'exponentiation.
+
+Le problème de logarithme discret requiert une clé \(p\), qui doit être
+très grande et nombre premier, et \(p-1\) avec un très grand facteur
+premier, d'où \(p = q\times2-1\).
+
+\subsection{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsubsection{\texorpdfstring{\textbf{Génération d'une nombre premier
+ElGamal}}{Génération d'une nombre premier ElGamal}}\label{guxe9nuxe9ration-dune-nombre-premier-elgamal}
+
+\paragraph{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{premierElGamal}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{q} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{n}{p} \PY{o}{=} \PY{n}{q}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{1}
+          \PY{k}{while} \PY{o+ow}{not} \PY{n}{testMiller}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{:}
+            \PY{n}{q} \PY{o}{=} \PY{n}{generateurPremier}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+            \PY{n}{p} \PY{o}{=} \PY{n}{q}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{1}
+        
+          \PY{k}{return} \PY{n}{p}\PY{p}{,} \PY{n}{q}
+\end{Verbatim}
+\end{code}
+
+
+\paragraph{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}227}]:} \PY{n}{power} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{]}
+          
+          \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{power}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{:}
+            \PY{n}{t} \PY{o}{=} \PY{n}{micro}\PY{p}{(}\PY{p}{)}
+            \PY{n}{p}\PY{p}{,} \PY{n}{q} \PY{o}{=} \PY{n}{premierElGamal}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{donne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{p}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{q}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{* 2 + 1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{p}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est premier :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{sy}\PY{o}{.}\PY{n}{isprime}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}Nombre premier de ElGamal trouvé en}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{displayPeriod}\PY{p}{(}\PY{n}{micro}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+5 donne 47 = 23 * 2 + 1
+47 est premier : True
+\#Nombre premier de ElGamal trouvé en 5.809ms
+
+10 donne 1319 = 659 * 2 + 1
+1319 est premier : True
+\#Nombre premier de ElGamal trouvé en 19.484ms
+
+100 donne 1309176998925936328789683684599 = 654588499462968164394841842299 * 2 + 1
+1309176998925936328789683684599 est premier : True
+\#Nombre premier de ElGamal trouvé en 169.448ms
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Construction d'une clé
+(p,a)}}{Construction d'une clé (p,a)}}\label{construction-dune-cluxe9-pa}
+
+\subsection{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\titleformat{\subsubsection}{}{}{}{}
+\subsubsection{\texorpdfstring{\textbf{Clé Privé
+ElGamal}}{Clé Privé ElGamal}}\label{cluxe9-privuxe9-elgamal}
+
+\paragraph{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{clePriveElGamal}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{p}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{premierElGamal}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+          \PY{n}{a} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{p}\PY{p}{,} \PY{n}{a}
+\end{Verbatim}
+\end{code}
+
+
+\paragraph{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}229}]:} \PY{n}{k} \PY{o}{=} \PY{l+m+mi}{100}
+          \PY{n}{p}\PY{p}{,} \PY{n}{a} \PY{o}{=} \PY{n}{clePriveElGamal}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Génération d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{une clé privé ElGamal (p,a) :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Génération d'une clé privé ElGamal (p,a) : (2024719205781249178367334290303,
+                                            258364839610907258768697440970)
+
+    \end{Verbatim}
+\end{code}
+
+\subsubsection{\texorpdfstring{\textbf{Clé Public
+ElGamal}}{Clé Public ElGamal}}\label{cluxe9-public-elgamal}
+
+\paragraph{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{clePublicElGamal}\PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{m} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{n} \PY{o}{=} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{p}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n}
+\end{Verbatim}
+\end{code}
+
+
+\paragraph{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}231}]:} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{clePublicElGamal}\PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Génération d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{une clé public ElGamal (p,m,n) :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Génération d'une clé public ElGamal (p,m,n) : (2024719205781249178367334290303,
+                                               1364958218230270862059352890533, 
+                                               336716890560643709019974134728)
+
+    \end{Verbatim}
+\end{code}
+
+\newpage
+\titleformat{\subsubsection}{\filcenter}{}{}{}
+\section{\texorpdfstring{\textbf{Implémentation de
+ElGamal}}{Implémentation de ElGamal}}\label{impluxe9mentation-de-elgamal}
+
+\subsection{\texorpdfstring{\textbf{Chiffrement}}{Chiffrement}}\label{chiffrement}
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{chiffrementElGamal}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{public}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{p}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{public}
+          \PY{k}{assert} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{n}{p}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x doit être inférieur à p}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{n}{k} \PY{o}{=} \PY{n}{rand}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        
+          \PY{n}{y1} \PY{o}{=} \PY{n}{expoRapide}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+          \PY{n}{y2} \PY{o}{=} \PY{n}{x}\PY{o}{*}\PY{n}{expoRapide}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{y1}\PY{p}{,} \PY{n}{y2}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}233}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hello World !}\PY{l+s+s2}{\PYZdq{}}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message est : }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Un bloc est de taille maximum :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{cMsg} \PY{o}{=} \PY{n}{encodageBloc}\PY{p}{(}\PY{n}{msg}\PY{p}{)}
+          
+          \PY{n}{elGamal} \PY{o}{=} \PY{n}{chiffrementElGamal}\PY{p}{(}\PY{n}{cMsg}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le bloc chiffré donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{elGamal}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message est : "Hello World !"
+
+Un bloc est de taille maximum : 15
+
+Le bloc chiffré donne : (1974869574197710043720909294406,
+6697713938789838788459408160074468572429525393096270496)
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Déchiffrement}}{Déchiffrement}}\label{duxe9chiffrement}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{dechiffrementElGamal}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{prive}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{y1}\PY{p}{,} \PY{n}{y2} \PY{o}{=} \PY{n}{y}
+          \PY{n}{p}\PY{p}{,} \PY{n}{a} \PY{o}{=} \PY{n}{prive}
+          \PY{n}{x} \PY{o}{=} \PY{p}{(}\PY{n}{expoRapide}\PY{p}{(}\PY{n}{y1}\PY{p}{,} \PY{n}{p}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{,} \PY{n}{p}\PY{p}{)} \PY{o}{*} \PY{n}{y2}\PY{p}{)} \PY{o}{\PYZpc{}}\PY{k}{p}
+        
+          \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{code}
+
+\newpage
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}235}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message à déchiffré est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{elGamal}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{dMsg} \PY{o}{=} \PY{n}{dechiffrementElGamal}\PY{p}{(}\PY{n}{elGamal}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le bloc déchiffré donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{dMsg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{newMsg} \PY{o}{=} \PY{n}{decodageBloc}\PY{p}{(}\PY{n}{dMsg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message déchiffré et décodé donne :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{newMsg}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{                     Message initial :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msg}\PY{p}{)}
+          
+          \PY{n}{cMsg} \PY{o}{=} \PY{n}{encodageBloc}\PY{p}{(}\PY{n}{msg}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message à déchiffré est : (1974869574197710043720909294406,
+6697713938789838788459408160074468572429525393096270496)
+
+Le bloc déchiffré donne : 6379322887179225045360026
+
+Le message déchiffré et décodé donne : Hello World !
+                     Message initial : Hello World !
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Chiffrement ElGamal d'un message
+entier}}{Chiffrement ElGamal d'un message entier}}\label{chiffrement-elgamal-dun-message-entier}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{messageToElGamal}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{public}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{p}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{public}
+        
+          \PY{n}{taille} \PY{o}{=} \PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{p}\PY{p}{)}
+          \PY{n}{l} \PY{o}{=} \PY{n}{encodage}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{n}{taille}\PY{p}{)}
+        
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{k}{for} \PY{n}{elt} \PY{o+ow}{in} \PY{n}{l}\PY{p}{:}
+            \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{chiffrementElGamal}\PY{p}{(}\PY{n}{elt}\PY{p}{,} \PY{n}{public}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{return} \PY{n}{result}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}237}]:} \PY{n}{msg} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget orci}
+                 \PY{l+s+s2}{sit amet ullamcorper. Curabitur venenatis non nulla eu ullamcorper. Sed dignissim,}
+                 \PY{l+s+s2}{......}
+                 \PY{l+s+s2}{tristique at. Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio.}
+                 \PY{l+s+s2}{Nulla vitae. }\PY{l+s+s2}{\PYZdq{}}
+                 
+          \PY{n}{msgElGamal} \PY{o}{=} \PY{n}{messageToElGamal}\PY{p}{(}\PY{n}{msg}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{msg}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{à été chiffré :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgElGamal}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+\newpage
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message "à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget orci sit
+            ......
+            Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae. "
+
+à été chiffré : [(109434280020782806597252569263,
+934309489404227287951670803618982807173118985947282268019), 
+(1459792442130535502460205342295, 1903418262967411147829421345996228320231855013638778776853),
+......
+(863087472162997549675753508325, 976857556035481490247804987927615071380108815839369400033),
+(1412585201035017209573687487619, 423490578546975523318750149647570)]
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Déchiffrement ElGamal d'un
+message}}{Déchiffrement ElGamal d'un message}}\label{duxe9chiffrement-elgamal-dun-message}
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{elGamalToMessage}\PY{p}{(}\PY{n}{elGamal}\PY{p}{,} \PY{n}{prive}\PY{p}{)}\PY{p}{:}
+        
+          \PY{n}{result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{k}{for} \PY{n}{elt} \PY{o+ow}{in} \PY{n}{elGamal}\PY{p}{:}
+            \PY{n}{result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{dechiffrementElGamal}\PY{p}{(}\PY{n}{elt}\PY{p}{,} \PY{n}{prive}\PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{p}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{prive}
+          \PY{n}{taille} \PY{o}{=} \PY{n}{tailleBlocMax}\PY{p}{(}\PY{n}{p}\PY{p}{)}
+          \PY{n}{l} \PY{o}{=} \PY{n}{decodage}\PY{p}{(}\PY{n}{result}\PY{p}{,} \PY{n}{tailleBloc}\PY{o}{=}\PY{n}{taille}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{l}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+Le message est donc bien déchiffré, excepté, encore une fois, pour le
+caractère spécial "à" qui a été remplacé par un "@".
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}239}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le message à déchiffrer est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgElGamal}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{msgAfter} \PY{o}{=} \PY{n}{elGamalToMessage}\PY{p}{(}\PY{n}{msgElGamal}\PY{p}{,} \PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{a}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Message déchiffré :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msgAfter}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{     Vérification :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{msg}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Le message à déchiffrer est : [(109434280020782806597252569263,
+934309489404227287951670803618982807173118985947282268019), 
+(1459792442130535502460205342295, 1903418262967411147829421345996228320231855013638778776853),
+......
+(863087472162997549675753508325, 976857556035481490247804987927615071380108815839369400033),
+(1412585201035017209573687487619, 423490578546975523318750149647570)]
+
+Message déchiffré : @ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget
+                    ......
+                    Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae.
+
+     Vérification : à Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque egestas eget
+                    ......
+                    Morbi augue purus, elementum non posuere ac, pulvinar sit amet odio. Nulla vitae.
+
+    \end{Verbatim}
+\end{code}
+
+\chapter{\texorpdfstring{\textbf{Partie 6 - Arithmétique dans K{[}X{]}
+et application à
+AES}}{Partie 6 - Arithmétique dans K{[}X{]} et application à AES}}\label{partie-6---arithmuxe9tique-dans-kx-et-application-uxe0-aes}
+
+\section{\texorpdfstring{\textbf{Question
+1}}{Question 1}}\label{question-1}
+
+\subsection{\texorpdfstring{\textbf{Implémentation de K{[}X{]} dans un
+corps}}{Implémentation de K{[}X{]} dans un corps}}\label{impluxe9mentation-de-kx-dans-un-corps}
+
+Implémentation de la fonction \(inverseMod(x, n)\) pour \(K[X]\) est
+demmandé Question 2 mais est requis pour l'implémentation de la divison
+de \(PolynomeModRing\)
+
+\subsubsection{\texorpdfstring{\textbf{Définition}}{Définition}}\label{duxe9finition}
+
+Cette implémentation concerne les polynômes à une variable, par exemple
+: \(2x^3+4x^2+5x+10\).
+Les polynomes sont à coéfficients dans \(F_n[X]\). Ces coefficients sond
+donc des entiers \(a_k\) tel que 0 \(\leq\) \(a_k\) \(\lt\) n.
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}288}]:} \PY{k}{class} \PY{n+nc}{PolynomeModRing}\PY{p}{:}
+          
+            \PY{c+c1}{\PYZsh{}Constructor}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+              \PY{k}{assert} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n+nb}{list}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p doit être sous forme de liste de coefficients}\PY{l+s+s2}{\PYZdq{}}
+              \PY{k}{assert} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n+nb}{int}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{n doit être un entier}\PY{l+s+s2}{\PYZdq{}}
+          
+              \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{p} \PY{o}{=} \PY{p}{[}\PY{n}{p}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{\PYZpc{}}\PY{k}{n} for i in range(len(p))]
+              \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n} \PY{o}{=} \PY{n}{n}
+            
+            \PY{n+nb+bp}{......}
+            \PY{n+nb+bp}{......} VOIR DANS LE FICHIER "PolyModRing.py" pour le code complet 
+            \PY{n+nb+bp}{......} (cela surchargerai le compte rendu de le mettre en entier ici)
+            \PY{n+nb+bp}{......}
+            
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{toString}\PY{p}{(}\PY{p}{)}
+          
+            \PY{k}{def} \PY{n+nf}{toString}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+              \PY{c+c1}{\PYZsh{}return str(self.p[len(p)\PYZhy{}1])}
+          
+              \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{powerMax}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{(}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{p}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}
+          
+              \PY{n}{m} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{p}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{m}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{p}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+              
+              \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{(}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ + }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{p}{[}\PY{n+nb}{str}\PY{p}{(}\PY{n}{m}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x\PYZca{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{m}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}
+          
+\end{Verbatim}
+\end{code}
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}289}]:} \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{29}
+          \PY{n}{p} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{]}
+          \PY{n}{q} \PY{o}{=} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{]}
+          
+          \PY{n}{P} \PY{o}{=} \PY{n}{PolynomeModRing}\PY{p}{(}\PY{n}{p}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          \PY{n}{Q} \PY{o}{=} \PY{n}{PolynomeModRing}\PY{p}{(}\PY{n}{q}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          
+          \PY{n}{R} \PY{o}{=} \PY{n}{P}\PY{o}{+}\PY{n}{Q}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Addition de deux polynômes P+Q :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{P}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Q}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{R}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{k} \PY{o}{=} \PY{l+m+mi}{2}
+          \PY{n}{R} \PY{o}{=} \PY{n}{P}\PY{o}{*}\PY{n}{k}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Produit d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{un polynôme et d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{un entier P*2 :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{P}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{k}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{R}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{R} \PY{o}{=} \PY{n}{P}\PY{o}{*}\PY{n}{Q}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Produit de deux polynômes P*Q :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{P}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Q}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{R}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          
+          \PY{n}{R} \PY{o}{=} \PY{n}{P}\PY{o}{/}\PY{o}{/}\PY{n}{Q}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Division euclidienne de deux polynômes P//Q=R :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{P}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{//}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Q}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{R}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+Addition de deux polynômes P+Q : (1x\^{}10 + 15x\^{}0) + (28x\^{}2 + 15x\^{}0) 
+= (1x\^{}10 + 28x\^{}2 + 1x\^{}0)
+
+Produit d'un polynôme et d'un entier P*2 : (1x\^{}10 + 15x\^{}0) * 2 
+= (2x\^{}10 + 1x\^{}0)
+
+Produit de deux polynômes P*Q : (1x\^{}10 + 15x\^{}0) * (28x\^{}2 + 15x\^{}0) 
+= (28x\^{}12 + 15x\^{}10 + 14x\^{}2 + 22x\^{}0)
+
+Division euclidienne de deux polynômes P//Q=R : (1x\^{}10 + 15x\^{}0) // (28x\^{}2 + 15x\^{}0) 
+= (28x\^{}8 + 14x\^{}6 + 7x\^{}4 + 18x\^{}2 + 9x\^{}0)
+
+    \end{Verbatim}
+\end{code}
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Euclide Etendu dans
+\(F_n[X]\)}}{Euclide Etendu dans F\_n{[}X{]}}}\label{euclide-etendu-dans-f_nx}
+
+\subsubsection{\texorpdfstring{\textbf{Re-Définition}}{Re-Définition}}\label{re-duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{euclideEtendu}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{p}{)}\PY{p}{:}
+          
+          \PY{n}{r}\PY{p}{,} \PY{n}{r0} \PY{o}{=} \PY{n}{a}\PY{p}{,} \PY{n}{b}
+          \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}
+        
+          \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n+nb}{int}\PY{p}{)}\PY{p}{:}
+            \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}
+          \PY{k}{elif} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{PolynomeModRing}\PY{p}{)}\PY{p}{:}
+            \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{n}{PolynomeModRing}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{n}\PY{p}{)}\PY{p}{,} \PY{n}{PolynomeModRing}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{n}\PY{p}{)}\PY{p}{,}
+                           \PY{n}{PolynomeModRing}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{n}\PY{p}{)}\PY{p}{,} \PY{n}{PolynomeModRing}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{a}\PY{o}{.}\PY{n}{n}\PY{p}{)}
+          \PY{k}{else}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{Exception}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TypeError}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cette fonction a été définie pour des paramètres de type}
+                                         \PY{l+s+s2}{entiers ou polynomes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+          \PY{k}{while} \PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{r0}\PY{p}{,} \PY{n+nb}{int}\PY{p}{)} \PY{o+ow}{and} \PY{n}{r0}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{r0}\PY{p}{,} \PY{n}{PolynomeModRing}\PY{p}{)} \PY{o+ow}{and}
+                \PY{p}{(}\PY{n}{r0}\PY{o}{.}\PY{n}{powerMax}\PY{p}{(}\PY{p}{)}\PY{o}{!=}\PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{r0}\PY{o}{.}\PY{n}{p}\PY{p}{[}\PY{n}{r0}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{q} \PY{o}{=} \PY{n}{r}\PY{o}{/}\PY{o}{/}\PY{n}{r0}
+            \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{r0}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0} \PY{o}{=} \PY{n}{r0}\PY{p}{,} \PY{n}{u0}\PY{p}{,} \PY{n}{v0}\PY{p}{,} \PY{n}{r}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{q}\PY{o}{*}\PY{n}{r0}\PY{p}{)}\PY{p}{,} \PY{n}{u}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{q}\PY{o}{*}\PY{n}{u0}\PY{p}{)}\PY{p}{,} \PY{n}{v}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{q}\PY{o}{*}\PY{n}{v0}\PY{p}{)}
+        
+          \PY{k}{return} \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{v}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}292}]:} \PY{n}{R}\PY{p}{,} \PY{n}{U}\PY{p}{,} \PY{n}{V} \PY{o}{=} \PY{n}{euclideEtendu}\PY{p}{(}\PY{n}{P}\PY{p}{,} \PY{n}{Q}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Le PGCD de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{P}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{et de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Q}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{R}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{De plus : R=P*U+Q*V avec U =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{U}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ et V =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{V}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Verification :}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{P}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{U}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{Q}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{V}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{P}\PY{o}{*}\PY{n}{U}\PY{o}{+}\PY{n}{Q}\PY{o}{*}\PY{n}{V}\PY{p}{)}
+\end{Verbatim}
+\end{code}
+
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+[22, 0, 18]
+Le PGCD de (1x\^{}10 + 15x\^{}0) et de (28x\^{}2 + 15x\^{}0) est : (25)
+
+De plus : R=P*U+Q*V avec U = (1)  et V = (1x\^{}8 + 15x\^{}6 + 22x\^{}4 + 11x\^{}2 + 20x\^{}0)
+
+Verification : (1x\^{}10 + 15x\^{}0) * (1) + (28x\^{}2 + 15x\^{}0) * (1x\^{}8 + 15x\^{}6 + 22x\^{}4 + 11x\^{}2 + 20x\^{}0) 
+= (25)
+
+    \end{Verbatim}
+\end{code}
+
+\subsection{\texorpdfstring{\textbf{Inverse Modulaire dans
+\(F_n[X]\)}}{Inverse Modulaire dans F\_n{[}X{]}}}\label{inverse-modulaire-dans-f_nx}
+
+\subsubsection{\texorpdfstring{\textbf{Re-Définition}}{Re-Définition}}\label{duxe9finition}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{k}{def} \PY{n+nf}{inverseMod}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+          \PY{n}{r}\PY{p}{,} \PY{n}{u}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{euclideEtendu}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+          
+          \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n+nb}{int}\PY{p}{)}\PY{p}{:}
+            \PY{k}{assert} \PY{n}{r}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x et n doivent être premiers entre eux}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{r}\PY{p}{,} \PY{n}{PolynomeModRing}\PY{p}{)}\PY{p}{:}
+            \PY{k}{assert} \PY{n}{r}\PY{o}{.}\PY{n}{powerMax}\PY{p}{(}\PY{p}{)} \PY{o+ow}{and} \PY{n}{r}\PY{o}{.}\PY{n}{p}\PY{p}{[}\PY{n}{r}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{==}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x et n doivent être premiers entre eux}\PY{l+s+s2}{\PYZdq{}}
+        
+          \PY{k}{return} \PY{n}{u}\PY{o}{\PYZpc{}}\PY{k}{n}
+\end{Verbatim}
+\end{code}
+
+
+\subsubsection{\texorpdfstring{\textbf{Test}}{Test}}\label{test}
+
+   \begin{code}\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}0}]:} \PY{c+c1}{\PYZsh{}NE FONCTIONNE PAS}
+        
+        \PY{c+c1}{\PYZsh{}N = PolynomeModRing([n], n+1)}
+        
+        \PY{c+c1}{\PYZsh{}R = inverseMod(P, N)}
+        \PY{c+c1}{\PYZsh{}print(\PYZdq{}L\PYZsq{}inverse de\PYZdq{},P,\PYZdq{}modulo\PYZdq{},n,\PYZdq{}est :\PYZdq{},R)}
+\end{Verbatim}
+\end{code}
+
+
+\section{\texorpdfstring{\textbf{Question
+2}}{Question 2}}\label{question-2}
+
+\subsection{\texorpdfstring{\textbf{Utilisation de cette implémentation
+dans la routine SubBytes
+d'AES}}{Utilisation de cette implémentation dans la routine SubBytes d'AES}}\label{utilisation-de-cette-impluxe9mentation-dans-la-routine-subbytes-daes}
+
+Cette partie du chiffrement AES consiste à effectuer des clalculs sur
+des bits sous forme de polynôme, il faudra donc utiliser pour chaque
+octet \(PolynomeModRing([a_7,a_6,a_5,a_4,a_3,a_2,a_1, a_0], 2)\).
+Ensuite il sera donc possible d'effectuer les opérations sur ces
+polynômes afin d'obtenir la matrice de transformation afin de
+l'application sur chaque octet de l'entrée.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
